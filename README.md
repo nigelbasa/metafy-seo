@@ -48,7 +48,7 @@ root.render(
   <>
     <SeoTags
       title="Hello Vite"
-      description="Manually injecting SEO tags with metafy"
+      description="Manually injecting SEO tags with metafy-seo"
       canonical="/"
       openGraph={{
         url:         '/',
@@ -65,7 +65,7 @@ root.render(
       }}
       extraMeta={[
         { name: 'author', content: 'Nigel' },
-        { property: 'article:tag', content: 'metafy' }
+        { property: 'article:tag', content: 'metafy-seo' }
       ]}
       extraLinks={[
         { rel: 'stylesheet', href: '/seo-overrides.css' }
@@ -102,7 +102,7 @@ root.render(
     <SeoTags
       {...blogPostPreset({
         title:         'Hello Vite',
-        description:   'Using metafy with Vite + React',
+        description:   'Using metafy-seo with Vite + React',
         slug:          '/posts/hello-vite',
         author:        'Nigel',
         datePublished: '2025-07-16',
