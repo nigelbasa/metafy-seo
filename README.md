@@ -1,8 +1,8 @@
-# metafy
+# metafy-seo
 
 > Lightweight React SEO toolkit: inject `<meta>`/`<link>`/`<title>` tags client-side, or generate SSR strings
 
-metafy makes managing SEO metadata in React effortless. Whether you need to update `<head>` on user navigation or emit static `<title>` and `<meta>` tags at build time, metafy’s two-pronged API has you covered:
+metafy-seo makes managing SEO metadata in React effortless. Whether you need to update `<head>` on user navigation or emit static `<title>` and `<meta>` tags at build time, metafy’s two-pronged API has you covered:
 
 - **Declarative client-side updates** via `<SeoTags>`  
 - **Server-side/SSG output** via `generateSeoMarkup`
@@ -16,8 +16,8 @@ Out of the box you get:
 
 metafy works with Vite, Create React App, Next.js, Express—any React environment. Focus on your content; let metafy handle the SEO plumbing.  
 
-[![npm version](https://img.shields.io/npm/v/metafy.svg)](https://www.npmjs.com/package/metafy)  
-[![Downloads](https://img.shields.io/npm/dm/metafy.svg)](https://npmjs.com/package/metafy)  
+[![npm version](https://img.shields.io/npm/v/metafy-seo.svg)](https://www.npmjs.com/package/metafy-seo)  
+[![Downloads](https://img.shields.io/npm/dm/metafy-seo.svg)](https://npmjs.com/package/metafy-seo)  
 [![License: ISC](https://img.shields.io/badge/license-ISC-blue.svg)](LICENSE)
 
 ---
@@ -25,9 +25,9 @@ metafy works with Vite, Create React App, Next.js, Express—any React environme
 ## 🚀 Installation
 
 ```bash
-npm install metafy
+npm install metafy-seo
 # or
-yarn add metafy
+yarn add metafy-seo
 ```
 
 --- 
@@ -40,7 +40,7 @@ yarn add metafy
 // src/main.tsx
 import React from 'react'
 import ReactDOM from 'react-dom/client'
-import { SeoTags } from 'metafy'
+import { SeoTags } from 'metafy-seo'
 import App from './App'
 
 const root = ReactDOM.createRoot(document.getElementById('root')!)
@@ -93,7 +93,7 @@ Instead of crafting each field manually, import a preset:
 ```tsx
 import React from 'react'
 import ReactDOM from 'react-dom/client'
-import { SeoTags, blogPostPreset } from 'metafy'
+import { SeoTags, blogPostPreset } from 'metafy-seo'
 import App from './App'
 
 const root = ReactDOM.createRoot(document.getElementById('root')!)
@@ -126,7 +126,7 @@ Use `generateSeoMarkup()` to build head tags server-side:
 // pages/[slug].tsx
 import Head from 'next/head'
 import type { GetStaticProps } from 'next'
-import { generateSeoMarkup, blogPostPreset } from 'metafy'
+import { generateSeoMarkup, blogPostPreset } from 'metafy-seo'
 
 export const getStaticProps: GetStaticProps = async ({ params }) => {
   const post = await fetchPost(params!.slug as string)
@@ -169,7 +169,7 @@ export default function PostPage({ post, seo }: any) {
 import express from 'express'
 import fs from 'fs'
 import path from 'path'
-import { generateSeoMarkup, defaultPreset } from 'metafy'
+import { generateSeoMarkup, defaultPreset } from 'metafy-seo'
 
 const app = express()
 const template = fs.readFileSync(
@@ -224,7 +224,7 @@ A React component that upserts `<title>`, `<meta>`, and `<link>` tags into `<hea
 Generates a string of `<title>`, `<meta>`, and `<link>` tags from your config. Ideal for SSR or static-site injection.
 
 ```js
-import { generateSeoMarkup, defaultPreset } from 'metafy'
+import { generateSeoMarkup, defaultPreset } from 'metafy-seo'
 const headHTML = generateSeoMarkup(defaultPreset)
 ```
 
@@ -284,9 +284,6 @@ const headHTML = generateSeoMarkup(defaultPreset)
 
 ## 🤔 FAQ
 
-**Q: Why only one `.d.ts`?**  
-A: TypeScript reads from the `"types"` field; runtime picks CJS/ESM via `"main"`/`"module"`.
-
 **Q: Do I need to build on install?**  
 A: No—npm consumes your prebuilt `dist/` files. `prepare` only runs for Git installs or before publishing.
 
@@ -338,7 +335,7 @@ A: Conditionally set fields in your config based on `process.env.NODE_ENV`, or w
 
 ## 📜 License
 
-ISC © [Nigel Basarokwe]
+ISC © Nigel Basarokwe
 
 
 
