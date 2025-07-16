@@ -1,0 +1,44 @@
+{
+  "name": "metafy",
+  "version": "2.0.3",
+  "type": "module",
+  "main": "dist/cjs/index.js",
+  "module": "dist/esm/index.js",
+  "types": "dist/esm/index.d.ts",
+  "scripts": {
+    "clean": "rimraf dist",
+    "build": "npm run clean && rollup -c",
+    "prepare": "npm run build"
+  },
+  "author": "Nigel E. Basarokwe",
+  "license": "ISC",
+  "description": "Lightweight, dependency-free React components and utilities for managing SEO metadata (meta tags, Open Graph, Twitter Cards) with optional SSR markup generation and prerendering support.",
+  "keywords": [
+    "react",
+    "seo",
+    "meta-tags",
+    "open-graph",
+    "twitter-cards",
+    "head-management",
+    "ssr",
+    "prerendering",
+    "static-site",
+    "react-helmet-alternative",
+    "vite",
+    "nextjs"
+  ],
+  "peerDependencies": {
+    "react": ">=16.8 <20",
+    "react-dom": ">=16.8 <20"
+  },
+  "devDependencies": {
+    "@rollup/plugin-commonjs": "^28.0.6",
+    "@rollup/plugin-node-resolve": "^16.0.1",
+    "@types/react": "^18.2.0",
+    "@types/react-dom": "^18.2.0",
+    "rimraf": "^6.0.1",
+    "rollup": "^4.45.0",
+    "rollup-plugin-typescript2": "^0.36.0",
+    "typescript": "^5.8.3"
+  }
+}
