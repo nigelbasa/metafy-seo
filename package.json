@@ -7,14 +7,13 @@
   "types": "dist/esm/index.d.ts",
   "sideEffects": false,
   "repository": {
-  "type": "git",
-  "url": "git+https://github.com/nigelbasa/metafy-seo.git"
+    "type": "git",
+    "url": "git+https://github.com/nigelbasa/metafy-seo.git"
   },
   "bugs": {
     "url": "https://github.com/nigelbasa/metafy-seo/issues"
   },
   "homepage": "https://github.com/nigelbasa/metafy-seo#readme",
-
   "scripts": {
     "clean": "rimraf dist",
     "build": "npm run clean && rollup -c",
@@ -52,11 +51,22 @@
   "devDependencies": {
     "@rollup/plugin-commonjs": "^28.0.6",
     "@rollup/plugin-node-resolve": "^16.0.1",
+    "@semantic-release/commit-analyzer": "^13.0.1",
+    "@semantic-release/git": "^10.0.1",
+    "@semantic-release/github": "^11.0.3",
+    "@semantic-release/npm": "^12.0.2",
+    "@semantic-release/release-notes-generator": "^14.0.3",
     "@types/react": "^18.2.0",
     "@types/react-dom": "^18.2.0",
     "rimraf": "^6.0.1",
     "rollup": "^4.45.0",
     "rollup-plugin-typescript2": "^0.36.0",
+    "semantic-release": "^24.2.7",
     "typescript": "^5.8.3"
-  }
+  },
+  "files": [
+    "dist/",
+    "README.md",
+    "LICENSE"
+  ]
 }

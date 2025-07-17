@@ -333,6 +333,16 @@ A: Conditionally set fields in your config based on `process.env.NODE_ENV`, or w
 
 ---
 
+## 💬 Commit Format
+
+This project uses [Conventional Commits](https://www.conventionalcommits.org) to automate semantic versioning.
+
+Examples:
+- `fix: correct meta property fallback`
+- `feat: add productPreset`
+- `chore: update docs`
+- `BREAKING CHANGE: rename blogPostPreset → postPreset`
+
 ## 📜 License
 
 ISC © Nigel Basarokwe
