@@ -22,9 +22,7 @@ jobs:
           registry-url: 'https://registry.npmjs.org'
           always-auth: true
       - name: Configure npm auth
-        run: echo "//registry.npmjs.org/:_authToken=${{ secrets.NPM_TOKEN }}" > ~/.npmrc
-      - name: Show .npmrc contents
-        run: cat ~/.npmrc
+        run: echo "//registry.npmjs.org/:_authToken=${{ secrets.NPM_TOKEN }}" > ${{ env.NPM_CONFIG_USERCONFIG }}
 
       - name: Verify npm identity
         run: npm whoami
