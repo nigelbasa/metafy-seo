@@ -1,10 +1,20 @@
 {
   "name": "metafy-seo",
-  "version": "0.0.3",
+  "version": "0.1.0",
   "type": "module",
   "main": "dist/cjs/index.js",
   "module": "dist/esm/index.js",
   "types": "dist/esm/index.d.ts",
+  "sideEffects": false,
+  "repository": {
+  "type": "git",
+  "url": "git+https://github.com/nigelbasa/metafy-seo.git"
+  },
+  "bugs": {
+    "url": "https://github.com/nigelbasa/metafy-seo/issues"
+  },
+  "homepage": "https://github.com/nigelbasa/metafy-seo#readme",
+
   "scripts": {
     "clean": "rimraf dist",
     "build": "npm run clean && rollup -c",
@@ -12,7 +22,7 @@
   },
   "author": "Nigel E. Basarokwe",
   "license": "ISC",
-  "description": "Lightweight, dependency-free React components and utilities for managing SEO metadata (meta tags, Open Graph, Twitter Cards) with optional SSR markup generation and prerendering support.",
+  "description": "Lightweight, dependency-free React components and utilities for managing SEO metadata (meta tags, Open Graph, Twitter Cards) with optional SSR markup generation.",
   "keywords": [
     "meta-seo",
     "react",
@@ -31,6 +41,13 @@
   "peerDependencies": {
     "react": ">=16.8 <20",
     "react-dom": ">=16.8 <20"
+  },
+  "exports": {
+    ".": {
+      "import": "./dist/esm/index.js",
+      "require": "./dist/cjs/index.js",
+      "types": "./dist/esm/index.d.ts"
+    }
   },
   "devDependencies": {
     "@rollup/plugin-commonjs": "^28.0.6",
