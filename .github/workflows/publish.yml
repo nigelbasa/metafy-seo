@@ -23,6 +23,8 @@ jobs:
           always-auth: true
       - name: Configure npm auth
         run: echo "//registry.npmjs.org/:_authToken=${{ secrets.NPM_TOKEN }}" > ~/.npmrc
+      - name: Verify npm identity
+        run: npm whoami
 
       - run: npm ci
 
