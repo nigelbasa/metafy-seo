@@ -118,6 +118,137 @@ root.render(
 
 ---
 
+## 🧩 Global Configuration (SeoProvider)
+
+You can set site-wide defaults using `SeoProvider`. This is useful for defining a fallback title, default Twitter handle, or common Open Graph tags.
+
+```tsx
+// src/main.tsx
+import React from 'react'
+import ReactDOM from 'react-dom/client'
+import { SeoProvider, SeoTags } from 'metafy-seo'
+import App from './App'
+
+const defaults = {
+  title: 'My Awesome Site',
+  twitter: {
+    site: '@myhandle',
+    card: 'summary_large_image'
+  }
+}
+
+const root = ReactDOM.createRoot(document.getElementById('root')!)
+root.render(
+  <SeoProvider defaults={defaults}>
+    <App />
+  </SeoProvider>
+)
+```
+
+Now, any `<SeoTags>` usage will merge these defaults with its own props.
+
+---
+
+## ✨ Advanced Features
+
+### Title Templates
+Avoid repeating your brand name on every page. Set a `titleTemplate` in your `SeoProvider` (or individual `SeoTags`), and let metafy handle the rest.
+
+```tsx
+// Provider setup
+<SeoProvider defaults={{ titleTemplate: '%s | Acme Corp' }}>
+  {/* On a page */}
+  <SeoTags title="About Us" />
+  {/* Result: <title>About Us | Acme Corp</title> */}
+</SeoProvider>
+```
+
+### Internationalization (hreflang)
+Easily generate `rel="alternate" hreflang="..."` tags for multilingual sites.
+
+```tsx
+<SeoTags
+  languageAlternates={{
+    'en-US': 'https://example.com/en',
+    'es-ES': 'https://example.com/es',
+    'x-default': 'https://example.com/en'
+  }}
+/>
+```
+
+### Icons
+Configure favicons, apple touch icons, and more in one place.
+
+```tsx
+<SeoTags
+  icons={{
+    icon: '/favicon.ico',
+    apple: '/apple-touch-icon.png',
+    mask: { url: '/safari-pinned-tab.svg', color: '#5bbad5' }
+  }}
+/>
+```
+
+### Robots Shortcuts
+Quickly set `noindex` or `nofollow` meta tags without composing the `robots` string manually.
+
+```tsx
+// This will generate <meta name="robots" content="noindex,nofollow">
+<SeoTags noindex nofollow />
+
+// This will generate <meta name="robots" content="noindex">
+<SeoTags noindex />
+```
+
+### Site Verification
+Add meta tags for verifying site ownership with search engines like Google, Bing, Yandex, and Pinterest.
+
+```tsx
+<SeoTags
+  siteVerification={{
+    google: 'your-google-verification-id',
+    bing: 'your-bing-verification-id',
+    yandex: 'your-yandex-verification-id',
+    pinterest: 'your-pinterest-verification-id'
+  }}
+/>
+```
+
+### Facebook Integration
+Include your Facebook App ID for better integration with Facebook tools and insights.
+
+```tsx
+<SeoTags
+  facebook={{
+    appId: '1234567890'
+  }}
+/>
+```
+
+### Rich Open Graph Types
+Leverage detailed Open Graph types for `article`, `book`, `profile`, and `video` to provide richer context for social media shares.
+
+```tsx
+<SeoTags
+  openGraph={{
+    type: 'article',
+    title: 'My Awesome Blog Post',
+    description: 'A deep dive into something amazing.',
+    url: 'https://example.com/blog/my-post',
+    images: [{ url: 'https://example.com/cover.jpg' }],
+    article: {
+      publishedTime: '2025-01-01T12:00:00Z',
+      modifiedTime: '2025-01-02T14:30:00Z',
+      authors: ['https://example.com/authors/jane-doe'],
+      section: 'Technology',
+      tags: ['SEO', 'React', 'Open Graph']
+    }
+  }}
+/>
+```
+
+---
+
 ## 💻 SSR Example (Next.js)
 
 Use `generateSeoMarkup()` to build head tags server-side:
@@ -198,24 +329,29 @@ app.listen(3000, () => {
 
 A React component that upserts `<title>`, `<meta>`, and `<link>` tags into `<head>` on mount and removes them on unmount.
 
-| Prop           | Type               | Description                                  |
-| -------------- | ------------------ | -------------------------------------------- |
-| `title`        | `string`           | Page title                                   |
-| `description`  | `string`           | Meta description                             |
-| `canonical`    | `string`           | Canonical URL (rel="canonical")              |
-| `keywords`     | `string[]`         | Comma-separated keywords                     |
-| `robots`       | `string`           | e.g. "index,follow" or "noindex,nofollow"    |
-| `viewport`     | `string`           | e.g. "width=device-width, initial-scale=1"   |
-| `themeColor`   | `string`           | e.g. "#ffffff"                               |
-| `author`       | `string`           | Page author                                  |
-| `publisher`    | `string`           | Page publisher                               |
-| `rating`       | `string`           | e.g. "5/5"                                   |
-| `revisitAfter` | `string`           | e.g. "7 days"                                |
-| `language`     | `string`           | e.g. "en-US"                                 |
-| `openGraph`    | `OpenGraphConfig`  | OG tags: `url`, `title`, `description`, etc. |
-| `twitter`      | `TwitterConfig`    | Twitter card tags                            |
-| `extraMeta`    | `MetaEntry[]`      | Additional `<meta>` entries                  |
-| `extraLinks`   | `LinkEntry[]`      | Additional `<link>` entries                  |
+| Prop                 | Type                       | Description                                  |
+| :--- | :--- | :--- |
+| `title`              | `string`                   | Page title                                   |
+| `titleTemplate`      | `string`                   | Template (e.g. "%s \| Site"), %s = title     |
+| `description`        | `string`                   | Meta description                             |
+| `canonical`          | `string`                   | Canonical URL (rel="canonical")              |
+| `robots`             | `string`                   | e.g. "index,follow" or "noindex,nofollow"    |
+| `noindex`            | `boolean`                  | Shortcut for `robots: 'noindex'`             |
+| `nofollow`           | `boolean`                  | Shortcut for `robots: 'nofollow'`            |
+| `viewport`           | `string`                   | e.g. "width=device-width, initial-scale=1"   |
+| `themeColor`         | `string`                   | e.g. "#ffffff"                               |
+| `author`             | `string`                   | Page author                                  |
+| `publisher`          | `string`                   | Page publisher                               |
+| `language`           | `string`                   | e.g. "en-US"                                 |
+| `languageAlternates` | `Record<string, string>`   | Hreflang map: `{ 'en': '/en', 'fr': '/fr' }` |
+| `icons`              | `IconsConfig`              | Favicon, apple-touch-icon, mask-icon, etc.   |
+| `siteVerification`   | `SiteVerification`         | Google, Bing, Yandex, Pinterest site IDs     |
+| `facebook`           | `FacebookConfig`           | Facebook App ID (`fb:app_id`)                |
+| `openGraph`          | `OpenGraphConfig`          | OG tags: `url`, `title`, `description`, nested `article`, `profile`, `video`, etc. |
+| `twitter`            | `TwitterConfig`            | Twitter card tags                            |
+| `structuredData`     | `object[]`                 | JSON-LD objects to inject as scripts         |
+| `extraMeta`          | `MetaEntry[]`              | Additional `<meta>` entries                  |
+| `extraLinks`         | `LinkEntry[]`              | Additional `<link>` entries                  |
 
 ---
 
@@ -297,12 +433,15 @@ A: In your SSR pipeline, inject tags via `generateSeoMarkup()`. On the client, e
 A: No. It only cleans up tags it inserted (tracked internally). If you need broader cleanup, write a custom effect or rely entirely on SSR.
 
 **Q: How can I include JSON-LD structured data?**  
-A: Use `extraMeta` to add a script tag:  
+A: Use the `structuredData` prop directly. It accepts an array of objects which will be serialized to JSON inside `<script type="application/ld+json">` tags.
+
 ```tsx
 <SeoTags
-  extraMeta={[{
-    name: 'application/ld+json',
-    content: JSON.stringify(myJsonLdObject)
+  structuredData={[{
+    "@context": "https://schema.org",
+    "@type": "Organization",
+    "url": "https://www.example.com",
+    "logo": "https://www.example.com/logo.png"
   }]}
 />
 ```

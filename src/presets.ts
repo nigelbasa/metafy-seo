@@ -67,22 +67,23 @@ export function blogPostPreset(opts: BlogPostOptions): SeoConfig {
     description: opts.description,
     canonical:   opts.slug,
     openGraph: {
+      type:        'article',
       title:       opts.title,
       description: opts.description,
       url:         opts.slug,
       siteName:    opts.siteName,
-      images:      opts.images?.map(url => ({ url }))
+      images:      opts.images?.map(url => ({ url })),
+      article:     {
+        publishedTime: opts.datePublished,
+        authors:       opts.author ? [opts.author] : []
+      }
     },
     twitter: {
       card:        'summary_large_image',
       title:       opts.title,
       description: opts.description,
       image:       opts.images?.[0] ?? ''
-    },
-    extraMeta: [
-      { property: 'article:published_time', content: opts.datePublished },
-      { property: 'article:author',         content: opts.author }
-    ]
+    }
   }
 }
 
