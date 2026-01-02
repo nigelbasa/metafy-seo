@@ -1,6 +1,6 @@
 {
   "name": "metafy-seo",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "type": "module",
   "main": "dist/cjs/index.js",
   "module": "dist/esm/index.js",
@@ -21,7 +21,7 @@
   },
   "author": "Nigel E. Basarokwe",
   "license": "ISC",
-  "description": "Lightweight, dependency-free React components and utilities for managing SEO metadata (meta tags, Open Graph, Twitter Cards) with optional SSR markup generation.",
+  "description": "Lightweight, SSR-safe React components and utilities for managing SEO metadata. Supports Next.js App Router, Vite, and any React environment.",
   "keywords": [
     "meta-seo",
     "react",
@@ -35,7 +35,9 @@
     "static-site",
     "react-helmet-alternative",
     "vite",
-    "nextjs"
+    "nextjs",
+    "next-metadata",
+    "app-router"
   ],
   "peerDependencies": {
     "react": ">=16.8 <20",
@@ -46,6 +48,11 @@
       "import": "./dist/esm/index.js",
       "require": "./dist/cjs/index.js",
       "types": "./dist/esm/index.d.ts"
+    },
+    "./next": {
+      "import": "./dist/esm/next.js",
+      "require": "./dist/cjs/next.js",
+      "types": "./dist/esm/next.d.ts"
     }
   },
   "devDependencies": {
