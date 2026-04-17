@@ -77,15 +77,16 @@ npm link metafy-seo
 
 ## Publishing
 
-Semantic Release handles versioning based on commit messages:
+Publishing is handled by GitHub Actions with npm trusted publishing (OIDC).
 
-- `fix:` → Patch release (1.0.x)
-- `feat:` → Minor release (1.x.0)
-- `BREAKING CHANGE:` → Major release (x.0.0)
+Release flow:
+- Bump version in `package.json`
+- Commit and push to `main`
+- Create and push a version tag (for example `v2.0.1`) or run the publish workflow manually
 
-Manual publish:
+Manual local publish (fallback):
 ```bash
-npm publish
+npm publish --access public
 ```
 
 ## Commit Format
