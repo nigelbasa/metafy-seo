@@ -1,18 +1,25 @@
 # metafy-seo
 
-> Lightweight, SSR-safe React SEO toolkit for managing meta tags, Open Graph, and Twitter Cards
+> Lightweight SEO toolkit for client-rendered React SPAs (Vite, CRA, and similar)
 
 [![npm version](https://img.shields.io/npm/v/metafy-seo.svg)](https://www.npmjs.com/package/metafy-seo)
 [![License: ISC](https://img.shields.io/badge/license-ISC-blue.svg)](LICENSE)
 
+## Scope
+
+metafy-seo is intentionally **SPA-only**.
+
+- Supported: React SPAs such as Vite, CRA, Preact/React compatibility layers, and similar client-rendered setups.
+- Not supported: Next.js metadata API, server-side rendering, or server-generated head markup flows.
+
 ## Features
 
-- ✅ **SSR Safe** - Works with Next.js, Remix, and any SSR framework
-- ✅ **Next.js App Router** - Native metadata API support
-- ✅ **Zero Dependencies** - Only React as peer dependency
-- ✅ **TypeScript** - Fully typed
-- ✅ **XSS Protected** - Auto-escapes content
-- ✅ **Presets** - Ready-to-use configs for blogs, products, social
+- Client-side `<head>` management for title/meta/link/script tags
+- Open Graph and Twitter card support
+- JSON-LD structured data support
+- TypeScript-first API
+- Ready-to-use presets for common page types
+- Zero runtime dependencies beyond React
 
 ## Installation
 
@@ -22,19 +29,24 @@ npm install metafy-seo
 
 ## Quick Start
 
-### React / Vite / CRA
-
 ```tsx
 import { SeoTags } from 'metafy-seo'
 
-function App() {
+export default function App() {
   return (
     <>
       <SeoTags
         title="My Page"
         description="Page description"
         canonical="/my-page"
-        openGraph={{ url: '/my-page', title: 'My Page' }}
+        openGraph={{
+          url: 'https://example.com/my-page',
+          title: 'My Page',
+          images: [
+            { url: 'https://example.com/og-1.jpg', alt: 'Cover' },
+            { url: 'https://example.com/og-2.jpg', alt: 'Alternate cover' }
+          ]
+        }}
         twitter={{ card: 'summary_large_image' }}
       />
       <main>...</main>
@@ -43,37 +55,23 @@ function App() {
 }
 ```
 
-### Next.js App Router (v14+)
+## Global Defaults
 
 ```tsx
-// app/page.tsx
-import { generateNextMetadata, pagePreset } from 'metafy-seo'
+import { SeoProvider, SeoTags } from 'metafy-seo'
 
-export const metadata = generateNextMetadata(pagePreset({
-  title: 'My Site',
-  description: 'Welcome to my site',
-  url: 'https://example.com',
-  image: '/og-image.png'
-}))
-
-export default function Page() {
-  return <main>...</main>
+function Root() {
+  return (
+    <SeoProvider
+      defaults={{
+        titleTemplate: '%s | My Site',
+        twitter: { site: '@myhandle' }
+      }}
+    >
+      <SeoTags title="About" />
+    </SeoProvider>
+  )
 }
-```
-
-### SSR / Static Generation
-
-```ts
-import { generateSeoMarkup, blogPostPreset } from 'metafy-seo'
-
-const headTags = generateSeoMarkup(blogPostPreset({
-  title: 'My Blog Post',
-  description: 'A great article',
-  slug: '/blog/my-post',
-  author: 'Nigel',
-  datePublished: '2025-01-01'
-}))
-// Returns: <title>My Blog Post</title><meta name="description"...
 ```
 
 ## Presets
@@ -85,28 +83,11 @@ const headTags = generateSeoMarkup(blogPostPreset({
 | `productPreset()` | E-commerce products (includes JSON-LD) |
 | `socialPreset()` | Social media optimized |
 
-## Global Defaults
-
-```tsx
-import { SeoProvider, SeoTags } from 'metafy-seo'
-
-function App() {
-  return (
-    <SeoProvider defaults={{ 
-      titleTemplate: '%s | My Site',
-      twitter: { site: '@myhandle' }
-    }}>
-      <SeoTags title="About" /> {/* → "About | My Site" */}
-    </SeoProvider>
-  )
-}
-```
-
 ## API Reference
 
 ### `<SeoTags {...config} />`
 
-Client-side component that injects meta tags into `<head>`.
+Client-side component that injects SEO tags into `<head>`.
 
 | Prop | Type | Description |
 |------|------|-------------|
@@ -119,24 +100,16 @@ Client-side component that injects meta tags into `<head>`.
 | `icons` | `object` | Favicon, apple-touch-icon |
 | `structuredData` | `object[]` | JSON-LD schema objects |
 
-### `generateNextMetadata(config)`
-
-Converts SeoConfig to Next.js Metadata format.
-
-### `generateSeoMarkup(config)`
-
-Returns HTML string for SSR injection.
-
 ## Utilities
 
 ```ts
-import { isServer, isClient, escapeHtml } from 'metafy-seo'
+import { isClient, isServer, deepMerge } from 'metafy-seo'
 
 if (isClient) {
-  // Browser-only code
+  // Browser-only logic
 }
 ```
 
 ## License
 
-ISC © [Nigel E. Basarokwe](https://github.com/nigelbasa)
+ISC (c) [Nigel E. Basarokwe](https://github.com/nigelbasa)

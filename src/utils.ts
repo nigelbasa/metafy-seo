@@ -1,5 +1,5 @@
 /**
- * SSR and utility helpers for metafy-seo
+ * Runtime and utility helpers for metafy-seo.
  */
 
 /** Check if code is running on server (no window/document) */
@@ -43,7 +43,7 @@ export function upsertTag(
   uniqueValue: string,
   attrs: Record<string, string>
 ): HTMLElement | null {
-  // SSR safety: return early if no document
+  // Safety: return early if no browser document
   if (isServer) return null
 
   // Try to find an existing tag that matches the unique key/value

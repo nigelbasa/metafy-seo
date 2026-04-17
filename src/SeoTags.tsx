@@ -13,7 +13,7 @@ import { useSeo } from './SeoProvider'
  *
  * @remarks
  * Uses a cleanup effect to remove tags when this component unmounts.
- * SSR-safe: does nothing on server, only runs on client.
+ * Client-only behavior: tags are injected in the browser after mount.
  *
  * @example
  * <SeoTags
@@ -33,7 +33,7 @@ export const SeoTags: React.FC<SeoConfig> = props => {
   const prevConfigRef = useRef<string>('')
 
   useEffect(() => {
-    // SSR safety: skip on server
+    // Runtime safety: skip when no browser globals are available.
     if (isServer) return
 
     const configString = JSON.stringify(config)
@@ -69,6 +69,20 @@ export const SeoTags: React.FC<SeoConfig> = props => {
         href,
         ...extraAttrs
       })
+    }
+
+    /**
+     * Helper for multi-value OG fields that require duplicate meta tags.
+     * Tags are marked with data-metafy so only library-managed tags are replaced.
+     */
+    const addManagedPropertyMeta = (dataKey: string, property: string, content: string) => {
+      if (!content) return
+      const el = document.createElement('meta')
+      el.setAttribute('property', property)
+      el.setAttribute('content', content)
+      el.setAttribute('data-metafy', dataKey)
+      head.appendChild(el)
+      added.push(el)
     }
 
     // 1) Title tag
@@ -158,18 +172,17 @@ export const SeoTags: React.FC<SeoConfig> = props => {
           if (!val) return
 
           if (key === 'images' && Array.isArray(val)) {
-            // Clear previous OG images before adding new ones
-            head.querySelectorAll<HTMLMetaElement>('meta[property^="og:image"]').forEach(el => {
-              if (added.includes(el)) return
+            // Replace only tags managed by this library for OG images.
+            head.querySelectorAll<HTMLMetaElement>('meta[data-metafy^="og-image-"]').forEach(el => {
               head.removeChild(el)
             })
-            // Now add new ones
-            val.forEach(img => {
-              addMeta('property', 'og:image', img.url)
-              if (img.alt) addMeta('property', 'og:image:alt', img.alt)
-              if (img.width) addMeta('property', 'og:image:width', String(img.width))
-              if (img.height) addMeta('property', 'og:image:height', String(img.height))
-              if (img.type) addMeta('property', 'og:image:type', img.type)
+
+            val.forEach((img, index) => {
+              addManagedPropertyMeta(`og-image-${index}`, 'og:image', img.url)
+              if (img.alt) addManagedPropertyMeta(`og-image-${index}-alt`, 'og:image:alt', img.alt)
+              if (img.width) addManagedPropertyMeta(`og-image-${index}-width`, 'og:image:width', String(img.width))
+              if (img.height) addManagedPropertyMeta(`og-image-${index}-height`, 'og:image:height', String(img.height))
+              if (img.type) addManagedPropertyMeta(`og-image-${index}-type`, 'og:image:type', img.type)
             })
           } else if (typeof val === 'object') {
             // Handle nested OG objects (article, book, profile, video)
@@ -180,20 +193,26 @@ export const SeoTags: React.FC<SeoConfig> = props => {
                 if (!nestedVal) return
 
                 if (Array.isArray(nestedVal)) {
-                  // Clear previous nested array OG tags
-                  head.querySelectorAll<HTMLMetaElement>(`meta[property="${prefix}:${nestedKey}"]`).forEach(el => {
-                    if (added.includes(el)) return
+                  const arrayTagPrefix = `og-array-${String(key)}-${nestedKey}`
+                  head.querySelectorAll<HTMLMetaElement>(`meta[data-metafy^="${arrayTagPrefix}-"]`).forEach(el => {
                     head.removeChild(el)
                   })
-                    ; (nestedVal as unknown[]).forEach((item: unknown) => {
+
+                    ; (nestedVal as unknown[]).forEach((item: unknown, itemIndex: number) => {
                       if (typeof item === 'object' && item !== null) {
                         const itemObj = item as Record<string, string>
                         if (key === 'video' && nestedKey === 'actors') {
-                          addMeta('property', `${prefix}:actor`, itemObj.actor)
-                          if (itemObj.role) addMeta('property', `${prefix}:actor:role`, itemObj.role)
+                          addManagedPropertyMeta(`${arrayTagPrefix}-${itemIndex}-actor`, `${prefix}:actor`, itemObj.actor)
+                          if (itemObj.role) {
+                            addManagedPropertyMeta(`${arrayTagPrefix}-${itemIndex}-role`, `${prefix}:actor:role`, itemObj.role)
+                          }
                         }
                       } else {
-                        addMeta('property', `${prefix}:${nestedKey}`, String(item))
+                        addManagedPropertyMeta(
+                          `${arrayTagPrefix}-${itemIndex}`,
+                          `${prefix}:${nestedKey}`,
+                          String(item)
+                        )
                       }
                     })
                 } else {

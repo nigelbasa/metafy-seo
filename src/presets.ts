@@ -50,7 +50,7 @@ export interface BlogPostOptions {
  * - Appends `article:published_time` and `article:author` meta tags.
  *
  * @param opts - Configuration values specific to the blog post.
- * @returns A `SeoConfig` ready for `<SeoTags>` or `generateSeoMarkup()`.
+ * @returns A `SeoConfig` ready for `<SeoTags>`.
  */
 export function blogPostPreset(opts: BlogPostOptions): SeoConfig {
   return {
@@ -116,7 +116,7 @@ export interface ProductOptions {
  * - Includes JSON-LD structured data for products.
  *
  * @param opts - Configuration values specific to the product.
- * @returns A `SeoConfig` ready for `<SeoTags>` or `generateSeoMarkup()`.
+ * @returns A `SeoConfig` ready for `<SeoTags>`.
  */
 export function productPreset(opts: ProductOptions): SeoConfig {
   return {

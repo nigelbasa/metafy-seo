@@ -1,6 +1,6 @@
 {
   "name": "metafy-seo",
-  "version": "1.1.0",
+  "version": "2.0.0",
   "type": "module",
   "main": "dist/cjs/index.js",
   "module": "dist/esm/index.js",
@@ -17,11 +17,13 @@
   "scripts": {
     "clean": "rimraf dist",
     "build": "npm run clean && rollup -c",
+    "test": "vitest run --environment jsdom",
+    "test:watch": "vitest --environment jsdom",
     "prepare": "npm run build"
   },
   "author": "Nigel E. Basarokwe",
   "license": "ISC",
-  "description": "Lightweight, SSR-safe React components and utilities for managing SEO metadata. Supports Next.js App Router, Vite, and any React environment.",
+  "description": "Lightweight SEO toolkit for client-rendered React SPAs (Vite, CRA, and similar).",
   "keywords": [
     "meta-seo",
     "react",
@@ -30,14 +32,11 @@
     "open-graph",
     "twitter-cards",
     "head-management",
-    "ssr",
-    "prerendering",
-    "static-site",
     "react-helmet-alternative",
     "vite",
-    "nextjs",
-    "next-metadata",
-    "app-router"
+    "cra",
+    "spa",
+    "single-page-app"
   ],
   "peerDependencies": {
     "react": ">=16.8 <20",
@@ -48,28 +47,24 @@
       "import": "./dist/esm/index.js",
       "require": "./dist/cjs/index.js",
       "types": "./dist/esm/index.d.ts"
-    },
-    "./next": {
-      "import": "./dist/esm/next.js",
-      "require": "./dist/cjs/next.js",
-      "types": "./dist/esm/next.d.ts"
     }
   },
   "devDependencies": {
     "@rollup/plugin-commonjs": "^28.0.6",
     "@rollup/plugin-node-resolve": "^16.0.1",
-    "@semantic-release/commit-analyzer": "^13.0.1",
-    "@semantic-release/git": "^10.0.1",
-    "@semantic-release/github": "^11.0.3",
-    "@semantic-release/npm": "^12.0.2",
-    "@semantic-release/release-notes-generator": "^14.0.3",
+    "@testing-library/react": "^16.3.2",
     "@types/react": "^18.2.0",
     "@types/react-dom": "^18.2.0",
+    "jsdom": "^27.0.1",
     "rimraf": "^6.0.1",
     "rollup": "^4.45.0",
-    "rollup-plugin-typescript2": "^0.36.0",
-    "semantic-release": "^24.2.7",
-    "typescript": "^5.8.3"
+    "rollup-plugin-typescript2": "^0.37.0",
+    "typescript": "^5.8.3",
+    "vitest": "^3.2.4"
+  },
+  "overrides": {
+    "brace-expansion": "5.0.5",
+    "picomatch": "4.0.4"
   },
   "files": [
     "dist/",

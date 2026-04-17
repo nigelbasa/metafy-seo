@@ -8,8 +8,6 @@ metafy-seo/
 │   ├── index.ts          # Main exports
 │   ├── SeoTags.tsx       # Client-side component
 │   ├── SeoProvider.tsx   # Context provider
-│   ├── generateSeoMarkup.ts  # SSR markup generator
-│   ├── next.ts           # Next.js specific utilities
 │   ├── presets.ts        # Ready-to-use configurations
 │   ├── types.ts          # TypeScript definitions
 │   └── utils.ts          # Helper utilities
@@ -30,21 +28,20 @@ This cleans the `dist/` folder and runs Rollup to generate both ESM and CJS bund
 
 ## Key Design Decisions
 
-### SSR Safety
-- All DOM operations check `typeof window !== 'undefined'`
-- `isServer` and `isClient` utilities exported for consumers
+### SPA-Only Runtime
+- All DOM operations run on the client inside React effects
+- `isServer` and `isClient` are exposed as runtime guards
 
 ### XSS Protection  
-- All content passed to `generateSeoMarkup()` is HTML escaped
 - Uses `escapeHtml()` utility for `&`, `<`, `>`, `"`, `'`
 
 ### Deep Merging
 - `SeoProvider` uses deep merge for nested objects (openGraph, twitter)
 - Prevents losing nested properties when overriding
 
-### Next.js Support
-- `generateNextMetadata()` converts our config to Next.js format
-- Keeps our API consistent while supporting native Next.js features
+### Scope
+- Package targets client-rendered React SPAs only (Vite, CRA, similar)
+- Next.js metadata helpers and server-rendered markup generation are intentionally out of scope
 
 ## Adding a New Preset
 
