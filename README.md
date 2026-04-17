@@ -3,6 +3,7 @@
 > Lightweight SEO toolkit for client-rendered React SPAs (Vite, CRA, and similar)
 
 [![npm version](https://img.shields.io/npm/v/metafy-seo.svg)](https://www.npmjs.com/package/metafy-seo)
+[![npm downloads](https://img.shields.io/npm/dt/metafy-seo.svg)](https://www.npmjs.com/package/metafy-seo)
 [![License: ISC](https://img.shields.io/badge/license-ISC-blue.svg)](LICENSE)
 
 ## Scope
